@@ -44,6 +44,10 @@ id_profesor,dia,turno
 12,Miércoles,Mañana
 12,Viernes,Tarde
 12,Sábado,Mañana
+13,Lunes,Tarde
+13,Martes,Mañana
+13,Miércoles,Mañana
+13,Viernes,Tarde
 14,Lunes,Mañana
 14,Miércoles,Mañana
 14,Jueves,Mañana

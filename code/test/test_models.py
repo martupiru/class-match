@@ -27,7 +27,7 @@ def test_profesor_esta_disponible_para_curso():
         ],
     )
 
-    assert profesor.esta_disponible_para(curso)
+    assert profesor.esta_disponible(curso.dia, curso.hora_inicio, curso.hora_fin)
 
 
 def test_cursos_solapados():
