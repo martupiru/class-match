@@ -57,12 +57,16 @@ def main():
     )
 
     # --- Greedy ---
-    cromosoma_greedy = resolver_greedy(dataset, orden)
+    cromosoma_greedy= resolver_greedy(dataset, orden)
     detalle_greedy = evaluar(cromosoma_greedy, dataset, orden)
 
     print(f"\nComparación (presupuesto = {evaluaciones_ga} evaluaciones para GA y random):\n")
     _imprimir_fila("Genético", detalle_ga, f"  ({resultado_ga.generaciones_ejecutadas} gen.)")
-    _imprimir_fila("Greedy", detalle_greedy, "  (determinístico)")
+    _imprimir_fila(
+    "Greedy",
+    detalle_greedy,
+    "  (solo disponibilidad)"
+    )
     _imprimir_fila(
         "Random", resultado_random.mejor_detalle, f"  ({resultado_random.intentos} intentos)"
     )

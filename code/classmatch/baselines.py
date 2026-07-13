@@ -5,12 +5,7 @@ Algoritmos de comparación (baselines) para CLASSMATCH: random y greedy.
 Sirven como punto de referencia para medir qué tan bien resuelve el
 algoritmo genético el problema, comparando contra:
 
-- Random: soluciones generadas completamente al azar, sin ninguna
-  heurística
-- Greedy: Recorre los cursos uno por unoy para cada uno asigna al profesor de MENOR COSTO usando exactamente
-  las mismas penalizaciones que fitness.py (distancia + disponibilidad +
-  conflictos de horario). Es el "baseline serio": una solución razonable
-  sin búsqueda poblacional, para ver cuánto aporta realmente el AG
+- Random y Greedy
 """
 
 import random
@@ -94,111 +89,45 @@ def mejor_de_n_aleatorios(
         mejor_cromosoma=mejor_cromosoma, mejor_detalle=mejor_detalle, intentos=n_intentos
     )
 
-
 # ---------------------------------------------------------------------------
-# GREEDY
+# GREEDY (sin ningún criterio relacionado a la función de fitness)
 # ---------------------------------------------------------------------------
-
-# Estado local del greedy: profesor_id -> cursos que ya se le asignaron
-# en ESTA solución (se va llenando a medida que se construye, a diferencia
-# del AG que evalúa conflictos recién al final sobre el cromosoma completo).
-EstadoAsignaciones = Dict[int, List[Curso]]
-
-
-def _tiene_conflicto(profesor_id: int, curso: Curso, asignados: EstadoAsignaciones) -> bool:
-    return any(curso.conflictua_con(otro) for otro in asignados.get(profesor_id, []))
-
-
-def _costo_candidato(
-    profesor: Profesor,
-    curso: Curso,
-    dataset: Dataset,
-    asignados: EstadoAsignaciones,
-    penalizacion_disponibilidad: float,
-    penalizacion_conflicto: float,
-) -> float:
-    """Costo de asignar a `profesor` a `curso`, con las MISMAS
-    penalizaciones que usa fitness.py, para que el greedy optimice
-    localmente la misma función objetivo que el AG optimiza globalmente."""
-    costo = dataset.distancia_profesor_curso(profesor, curso)
-
-    if not profesor.esta_disponible(curso.dia, curso.hora_inicio, curso.hora_fin):
-        costo += penalizacion_disponibilidad
-
-    if _tiene_conflicto(profesor.id, curso, asignados):
-        costo += penalizacion_conflicto
-
-    return costo
-
-
-def _elegir_mejor(
-    candidatos: List[Profesor],
-    curso: Curso,
-    dataset: Dataset,
-    asignados: EstadoAsignaciones,
-    penalizacion_disponibilidad: float,
-    penalizacion_conflicto: float,
-) -> Optional[Profesor]:
-    if not candidatos:
-        return None
-    return min(
-        candidatos,
-        key=lambda p: _costo_candidato(
-            p, curso, dataset, asignados, penalizacion_disponibilidad, penalizacion_conflicto
-        ),
-    )
 
 
 def resolver_greedy(dataset: Dataset, orden: OrdenCursos) -> Cromosoma:
-    """Heurística constructiva golosa: recorre los cursos en orden y, para
-    cada uno, asigna primero el Senior de menor costo. Después evalúa si
-    conviene sumarle un Junior: lo asigna solo si el beneficio neto
-    (recompensa por asignar Junior menos el costo que agrega) es
-    positivo, igual que premia/castiga el fitness del AG.
+    """Greedy "a mano", con el único chequeo que cualquier scheduler real
+    haría sin pensarlo (disponibilidad horaria general del profesor), pero
+    sin ninguna otra optimización relacionada a fitness.py
     """
     seniors = dataset.profesores_por_nivel(NivelProfesor.SENIOR)
     juniors = dataset.profesores_por_nivel(NivelProfesor.JUNIOR)
-    asignados: EstadoAsignaciones = {}
+
+    carga: Dict[int, int] = {p.id: 0 for p in seniors + juniors}
+
+    def _disponibles(candidatos: List[Profesor], curso: Curso) -> List[Profesor]:
+        return [
+            p for p in candidatos
+            if p.esta_disponible(curso.dia, curso.hora_inicio, curso.hora_fin)
+        ]
+
+    def _menos_cargado(candidatos: List[Profesor]) -> Optional[Profesor]:
+        if not candidatos:
+            return None
+        return min(candidatos, key=lambda p: (carga[p.id], p.id))
 
     cromosoma: Cromosoma = []
-
     for i in range(len(orden)):
         curso = orden.curso_en_posicion(dataset, i)
 
-        senior = _elegir_mejor(
-            seniors,
-            curso,
-            dataset,
-            asignados,
-            PENALIZACION_SENIOR_FUERA_DISPONIBILIDAD,
-            PENALIZACION_SENIOR_CONFLICTO_HORARIO,
-        )
+        senior = _menos_cargado(_disponibles(seniors, curso))
         senior_id = senior.id if senior is not None else None
         if senior is not None:
-            asignados.setdefault(senior.id, []).append(curso)
+            carga[senior.id] += 1
 
-        junior_id = None
-        mejor_junior = _elegir_mejor(
-            juniors,
-            curso,
-            dataset,
-            asignados,
-            PENALIZACION_JUNIOR_FUERA_DISPONIBILIDAD,
-            PENALIZACION_JUNIOR_CONFLICTO_HORARIO,
-        )
-        if mejor_junior is not None:
-            costo_junior = _costo_candidato(
-                mejor_junior,
-                curso,
-                dataset,
-                asignados,
-                PENALIZACION_JUNIOR_FUERA_DISPONIBILIDAD,
-                PENALIZACION_JUNIOR_CONFLICTO_HORARIO,
-            )
-            beneficio_neto = costo_junior + RECOMPENSA_JUNIOR_ASIGNADO
-            if beneficio_neto < 0:
-                junior_id = mejor_junior.id
-                asignados.setdefault(mejor_junior.id, []).append(curso)
+        junior = _menos_cargado(_disponibles(juniors, curso))
+        junior_id = junior.id if junior is not None else None
+        if junior is not None:
+            carga[junior.id] += 1
 
         cromosoma.append((senior_id, junior_id))
 
