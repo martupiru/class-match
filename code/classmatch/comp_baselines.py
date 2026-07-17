@@ -1,10 +1,7 @@
 """
-comparar_baselines.py
 Corre el algoritmo genetico, el greedy y el random sobre el mismo dataset
 y con la misma semilla y compara los resultados en una tabla.
 
-Uso:
-    python -m classmatch.comparar_baselines
 """
 
 from classmatch.alg_genetico_model import construir_toolbox, ejecutar
@@ -51,7 +48,7 @@ def main():
     detalle_ga = evaluar(mejor_ga, dataset, orden)
     evaluaciones_ga = TAMANO_POBLACION * (resultado_ga.generaciones_ejecutadas + 1)
 
-    # --- Random (mismo presupuesto de evaluaciones que el AG) ---
+    # --- Random  ---
     resultado_random = mejor_de_n_aleatorios(
         dataset, orden, n_intentos=evaluaciones_ga, semilla=SEMILLA
     )

@@ -1,5 +1,4 @@
 """
-utils.py
 Utilidades de normalización de texto para reconciliar inconsistencias entre
 las distintas fuentes de datos (encuesta, escuelas, cursos, distancias)
 """

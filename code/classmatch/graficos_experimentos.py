@@ -1,15 +1,8 @@
 """
-graficos_experimentos.py
-Genera los gráficos del barrido de parámetros (punto 9) y de la
+
+Genera los gráficos del barrido de parámetros y de la
 comparación de las 3 implementaciones (Genético, Greedy, Random), a
-partir de los CSV producidos por experimento_parametros.py.
-
-No vuelve a correr nada: solo lee resultados/barrido_parametros.csv y
-resultados/convergencia.csv y grafica. Si cambiaste el grid, corré antes:
-    python -m classmatch.experimento_parametros
-
-Uso:
-    python -m classmatch.graficos_experimentos
+partir de los CSV producidos por experimento_parametros.py
 """
 
 from pathlib import Path

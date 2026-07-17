@@ -1,6 +1,5 @@
 """
-fitness.py
-Función de evaluación (fitness)
+Función de evaluación
 
     fitness = distancia_total
             + penalizaciones_por_restricciones_incumplidas
@@ -8,7 +7,7 @@ Función de evaluación (fitness)
 
 Es una función de MINIMIZACIÓN: menor fitness = mejor solución.
 
-recibe un Cromosoma (lista de genes) y un Dataset, y devuelve un float. ga_engine.py lo registra en el toolbox
+recibe un Cromosoma (lista de genes) y un Dataset, y devuelve un float. el genetico lo registra en el toolbox
 envuelto en una tupla (requisito de DEAP para creator.FitnessMin).
 """
 
@@ -30,7 +29,7 @@ RECOMPENSA_JUNIOR_ASIGNADO = -20
 
 @dataclass
 class DetalleFitness:
-    """Desglose del fitness para depuración y métricas """
+    """Desglose del fitness para depuración y metricas """
     fitness_total: float = 0.0
     distancia_total: float = 0.0
     cursos_sin_senior: int = 0
@@ -58,7 +57,7 @@ def _cursos_por_profesor(
 
 def _contar_conflictos_horario(cursos_por_profesor: Dict[int, List[Curso]]) -> Dict[int, int]:
     """Cuenta, por profesor, cuántos pares de cursos asignados están en
-    conflicto entre sí (se solapan o son contiguos entre escuelas distintas)."""
+    conflicto entre sí (se solapan o son contiguos entre escuelas distintas)"""
     conflictos_por_profesor: Dict[int, int] = {}
     for profesor_id, cursos in cursos_por_profesor.items():
         conflictos = 0
@@ -73,7 +72,7 @@ def _contar_conflictos_horario(cursos_por_profesor: Dict[int, List[Curso]]) -> D
 def evaluar(
     cromosoma: Cromosoma, dataset: Dataset, orden: OrdenCursos
 ) -> DetalleFitness:
-    """Evalúa un cromosoma completo y devuelve el desglose de fitness."""
+    """Evalúa un cromosoma completo y devuelve el desglose de fitness"""
     detalle = DetalleFitness()
     cursos_por_profesor = _cursos_por_profesor(cromosoma, orden, dataset)
     conflictos_por_profesor = _contar_conflictos_horario(cursos_por_profesor)

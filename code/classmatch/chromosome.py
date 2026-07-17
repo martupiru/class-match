@@ -1,5 +1,4 @@
 """
-chromosome.py
 Representación del individuo (cromosoma) para CLASSMATCH
 
 Cada individuo es una lista de genes, un gen por curso, en el mismo orden
@@ -24,14 +23,13 @@ Cromosoma = List[Gen]
 class OrdenCursos:
     """Fija el orden curso <-> posición del cromosoma, una sola vez por
     Dataset, para que todo el resto del código (fitness, mutación, etc.)
-    use siempre el mismo mapeo índice -> curso."""
+    use siempre el mismo mapeo índice -> curso"""
     curso_ids: List[str]  # curso_ids[i] = id del curso en la posición i
 
     @classmethod
     def desde_dataset(cls, dataset: Dataset) -> "OrdenCursos":
         # Los ids son strings tipo "C1", "C10", "C2"; se ordenan por su
         # parte numérica para que queden en orden natural (C1, C2, ..., C22)
-        # en vez del orden lexicográfico por defecto.
         return cls(curso_ids=sorted(dataset.cursos.keys(), key=extraer_numero_id))
 
     def curso_en_posicion(self, dataset: Dataset, posicion: int) -> Curso:
@@ -106,8 +104,7 @@ def decodificar(
     cromosoma: Cromosoma, dataset: Dataset, orden: OrdenCursos
 ) -> Dict[int, Gen]:
     """Convierte el cromosoma (genotipo, lista posicional) en un diccionario
-    {curso_id: (senior_id, junior_id)} (fenotipo, más fácil de interpretar
-    para reportes o depuración)."""
+    {curso_id: (senior_id, junior_id)} """
     return {
         orden.curso_ids[i]: gen
         for i, gen in enumerate(cromosoma)

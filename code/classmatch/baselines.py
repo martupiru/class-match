@@ -1,9 +1,8 @@
 """
-baselines.py
 Algoritmos de comparación (baselines) para CLASSMATCH: random y greedy.
 
 Sirven como punto de referencia para medir qué tan bien resuelve el
-algoritmo genético el problema, comparando contra:
+algoritmo genetico el problema, comparando contra:
 
 - Random y Greedy
 """
@@ -34,9 +33,8 @@ def _gen_aleatorio_puro(
     curso: Curso, seniors: List[Profesor], juniors: List[Profesor]
 ) -> Gen:
     """Gen totalmente al azar: no mira disponibilidad ni conflictos, a
-    diferencia de generar_gen_aleatorio() (usado para poblar el AG, que sí
-    intenta priorizar disponibilidad). Es el "peor caso" honesto contra el
-    que se compara el algoritmo genético."""
+    diferencia de generar_gen_aleatorio() (usado para poblar el AG). Es el "peor caso" honesto contra el
+    que se compara el algoritmo genético"""
     senior = random.choice(seniors) if seniors else None
     junior = random.choice(juniors) if juniors and random.random() < 0.5 else None
     return (senior.id if senior else None, junior.id if junior else None)
@@ -65,12 +63,7 @@ def mejor_de_n_aleatorios(
     n_intentos: int,
     semilla: Optional[int] = None,
 ) -> ResultadoRandom:
-    """Genera `n_intentos` soluciones al azar y devuelve la mejor.
-
-    Para que la comparación contra el AG sea justa en "presupuesto
-    computacional", conviene usar n_intentos = tamano_poblacion *
-    (generaciones_ejecutadas + 1), es decir, la misma cantidad de
-    evaluaciones de fitness que hizo el AG.
+    """Genera `n_intentos` soluciones al azar y devuelve la mejor
     """
     if semilla is not None:
         random.seed(semilla)
@@ -90,15 +83,14 @@ def mejor_de_n_aleatorios(
     )
 
 # ---------------------------------------------------------------------------
-# GREEDY (sin ningún criterio relacionado a la función de fitness)
+# GREEDY
 # ---------------------------------------------------------------------------
 
 
 def resolver_greedy(dataset: Dataset, orden: OrdenCursos) -> Cromosoma:
-    """Greedy "a mano", con el único chequeo que cualquier scheduler real
-    haría sin pensarlo (disponibilidad horaria general del profesor), pero
-    sin ninguna otra optimización relacionada a fitness.py
-    """
+    """Greedy que solo verifica la disponibilidad de los profesores y no los conflictos de horario. 
+    Se prioriza asignar a los profesores menos cargados (menos cursos asignados)"""
+
     seniors = dataset.profesores_por_nivel(NivelProfesor.SENIOR)
     juniors = dataset.profesores_por_nivel(NivelProfesor.JUNIOR)
 

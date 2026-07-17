@@ -1,5 +1,4 @@
 """
-data_loader.py
 Lee los CSV canónicos de data/processed/ y construye un objeto `Dataset`
 central: diccionarios {id: objeto} para profesores/escuelas/cursos, más la
 matriz de distancias
@@ -32,7 +31,7 @@ PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 
 @dataclass
 class Dataset:
-    """Repositorio central: todo lo que el algoritmo necesita para operar."""
+    """Repositorio central: todo lo que el algoritmo necesita para operar"""
     profesores: Dict[int, Profesor]
     escuelas: Dict[str, Escuela]
     cursos: Dict[str, Curso]
@@ -61,8 +60,7 @@ class Dataset:
 
 def _parsear_nivel(valor: str) -> NivelProfesor:
     """Convierte el texto de la columna 'nivel' de profesores.csv al Enum
-    NivelProfesor, sin asumir un casing fijo (admite 'SENIOR', 'Senior',
-    'senior', etc., según cómo esté definido el Enum en models.py)."""
+    NivelProfesor"""
     texto = valor.strip()
     for candidato in (texto, texto.upper(), texto.capitalize(), texto.lower()):
         try:

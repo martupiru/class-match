@@ -1,26 +1,13 @@
 """
-experimento_parametros.py
-Punto 9 del cronograma: barrido de parámetros del algoritmo genético.
+barrido de parámetros del algoritmo genético.
 
 Corre el AG con distintas combinaciones de (tamaño de población, cantidad
-de generaciones), cada una repetida con varias semillas distintas (el AG
-es estocástico: una sola corrida por config no alcanza para concluir
-nada), y guarda todos los resultados en dos CSV para analizar después
-(punto 10) con pandas/Excel, o generar gráficos con
-graficos_experimentos.py:
-
-- resultados/barrido_parametros.csv: una fila por corrida completa
-  (AG, greedy o random), con el fitness final y su desglose.
-- resultados/convergencia.csv: una fila por generación de cada corrida
-  del AG (mínimo y promedio de fitness de la población), para poder
-  graficar curvas de convergencia.
+de generaciones), cada una repetida con varias semillas distintas y guarda todos los resultados en dos CSV 
+para analizar.
 
 También corre el greedy y un random con el mismo presupuesto que la
 config MÁS GRANDE del barrido, para tener las líneas de referencia en el
-mismo archivo.
-
-Uso:
-    python -m classmatch.experimento_parametros
+mismo archivo
 """
 
 import csv
@@ -34,14 +21,13 @@ from classmatch.chromosome import OrdenCursos
 from classmatch.data_loader import cargar_dataset
 from classmatch.fitness import evaluar
 
-# --- Grid de configuraciones a probar ---
+# --- configuraciones a probar ---
 POBLACIONES = [20, 50, 100, 200]
 GENERACIONES = [10, 30, 60, 150]
 SEMILLAS = [1, 2, 3, 4, 5, 6, 7, 8]
 
 # Corte por estancamiento deshabilitado a propósito: para el barrido nos
-# interesa ver el efecto de max_generaciones tal cual, no que el AG corte
-# antes por su cuenta.
+# interesa ver el efecto de max_generaciones tal cual
 GENERACIONES_SIN_MEJORA_LIMITE = 9999
 
 RESULTADOS_DIR = Path(__file__).resolve().parent.parent / "resultados"
@@ -197,7 +183,7 @@ def main():
 
 def _imprimir_resumen(filas):
     """Promedio y desvío de fitness por configuración (poblacion, generaciones),
-    ordenado de mejor a peor, para tener una primera lectura sin abrir el CSV."""
+    ordenado de mejor a peor, para tener una primera lectura sin abrir el CSV"""
     import pandas as pd
 
     df = pd.DataFrame(filas)

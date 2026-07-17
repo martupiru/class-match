@@ -1,5 +1,4 @@
 """
-ga_engine.py
 Integración con DEAP para CLASSMATCH.
 
 - Representación: lista de genes (senior_id, junior_id) por curso.
@@ -26,7 +25,7 @@ from classmatch.data_loader import Dataset
 from classmatch.fitness import fitness_valor
 from classmatch.models import NivelProfesor
 
-# --- Parámetros iniciales (README_PASO_3.md, sección 11) ---
+# --- Parámetros iniciales ---
 TAMANO_POBLACION = 100
 MAX_GENERACIONES = 100
 TAMANO_TORNEO = 3
@@ -49,9 +48,9 @@ def _registrar_creators():
 
 
 def _mutar_individuo(individuo, dataset: Dataset, indpb: float):
-    """Mutación por gen: para cada curso, con probabilidad `indpb`, aplica
+    """Mutación por gen: para cada curso, con probabilidad indpb, aplica
     una de las 4 acciones definidas:
-    cambiar Senior, cambiar Junior, agregar Junior, quitar Junior."""
+    cambiar Senior, cambiar Junior, agregar Junior, quitar Junior"""
     seniors = dataset.profesores_por_nivel(NivelProfesor.SENIOR)
     juniors = dataset.profesores_por_nivel(NivelProfesor.JUNIOR)
 
@@ -126,9 +125,9 @@ def ejecutar(
     semilla: Optional[int] = None,
     verbose: bool = True,
 ) -> ResultadoGA:
-    """Ciclo evolutivo generacional con elitismo explícito.
+    """Ciclo evolutivo generacional con elitismo explicito.
 
-    No se usa `algorithms.eaSimple` de DEAP porque no soporta elitismo
+    No se usa algorithms.eaSimple de DEAP porque no soporta elitismo
     nativo. Se implementa un loop manual, estándar en la literatura de AGs: selección + cruce + mutación sobre
     (pop - elites), y los elites se copian directo a la siguiente
     generación sin modificar

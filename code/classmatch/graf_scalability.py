@@ -1,13 +1,8 @@
 """
 Genera los gráficos del experimento de escalabilidad, a partir de
-resultados/escalabilidad.csv (producido por experimento_escalabilidad.py).
+resultados/escalabilidad.csv 
 
-No vuelve a correr nada: solo lee el CSV y grafica. Si cambiaste los
-factores de escala o las semillas, corré antes:
-    python -m classmatch.experimento_escalabilidad
-
-Uso:
-    python -m classmatch.graficos_escalabilidad
+No vuelve a correr nada: solo lee el CSV y grafica.
 """
 
 from pathlib import Path
@@ -37,7 +32,7 @@ def _cargar_datos() -> pd.DataFrame:
 
 # ---------------------------------------------------------------------------
 # 1. Tiempo de ejecución vs tamaño del problema (log-log), con la
-#    pendiente estimada (orden polinómico aproximado) por método
+#    pendiente estimada por método
 # ---------------------------------------------------------------------------
 def graficar_tiempo_vs_tamano(df: pd.DataFrame):
     fig, ax = plt.subplots(figsize=(9, 7))
@@ -109,7 +104,7 @@ def graficar_calidad_vs_tamano(df: pd.DataFrame):
 
 # ---------------------------------------------------------------------------
 # 3. Boxplots: distribución del TIEMPO por factor de escala, un panel
-#    por método (mismo eje Y en los 3, para comparar de un vistazo)
+#    por método 
 # ---------------------------------------------------------------------------
 def graficar_boxplots_tiempo(df: pd.DataFrame):
     factores = sorted(df["factor_escala"].unique())
@@ -161,8 +156,7 @@ def graficar_boxplots_calidad(df: pd.DataFrame):
 
 # ---------------------------------------------------------------------------
 # 5. Boxplot del TIEMPO por factor de escala, UNO POR MÉTODO Y POR
-#    ARCHIVO (a diferencia del gráfico 3, que junta los 3 paneles en una
-#    sola imagen): cada método con su propia escala, pensados para
+#    ARCHIVO: cada método con su propia escala, pensados para
 #    mostrarse/exportarse por separado.
 # ---------------------------------------------------------------------------
 def graficar_boxplot_tiempo_individual(df: pd.DataFrame, metodo: str):

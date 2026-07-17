@@ -1,5 +1,4 @@
 """
-models.py
 Modelos de dominio para CLASSMATCH: Profesor, Escuela, Curso y estructuras
 de apoyo (nivel de profesor, bloques de disponibilidad).
 
@@ -29,7 +28,7 @@ class NivelProfesor(str, Enum):
 @dataclass(frozen=True)
 class BloqueDisponibilidad:
     """Representa un intervalo continuo de disponibilidad de un profesor
-    en un día particular.
+    en un día particular
 
     Ejemplo: BloqueDisponibilidad("Lunes", time(8, 0), time(13, 0))
     significa que el profesor está disponible los lunes de 8:00 a 13:00.
@@ -47,7 +46,7 @@ class BloqueDisponibilidad:
 
     def cubre(self, dia: str, hora_inicio: time, hora_fin: time) -> bool:
         """Indica si este bloque cubre completamente un horario dado
-        (mismo día, y el bloque contiene el intervalo solicitado)."""
+        (mismo día, y el bloque contiene el intervalo solicitado)"""
         return (
             self.dia == dia
             and self.hora_inicio <= hora_inicio

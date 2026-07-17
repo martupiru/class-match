@@ -1,6 +1,4 @@
 """
-scalability.py
-
 Experimento de escalabilidad para CLASSMATCH.
 
 Con la configuración del AG fija (misma población y mismas generaciones),
@@ -11,13 +9,6 @@ cómo escalan el tiempo de cómputo y la calidad de las soluciones de:
 - Greedy
 - Random
 
-Los resultados se guardan en:
-
-    resultados/escalabilidad.csv
-
-Uso:
-
-    python -m classmatch.scalability
 """
 
 import csv
@@ -119,7 +110,7 @@ def generar_dataset_sintetico(
     - matriz de distancias original.
 
     La semilla se acepta para conservar la interfaz del experimento, aunque
-    esta versión del generador es determinista.
+    esta versión del generador es determinista
     """
     if factor < 1:
         raise ValueError("El factor de escala debe ser mayor o igual a 1")
