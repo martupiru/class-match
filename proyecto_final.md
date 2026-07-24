@@ -135,24 +135,24 @@ Finalmente, los resultados del algoritmo genético fueron comparados con los obt
 
 #### 3.10 Resultados
 ##### 3.10.1 Barrido de parámetros
-![2_heatmap_parametros](https://hackmd.io/_uploads/rJRTSMWBMe.png)
+![2_heatmap_parametros](https://github.com/martupiru/class-match/blob/main/code/resultados/graficos/2_heatmap_parametros.png)
 *Figura 1: Fitness promedio final del AG (8 semillas) para cada combinación de población y generaciones evaluada.*
 
 
-![4_comparacion_metodos](https://hackmd.io/_uploads/BJWk8f-SGg.png)
+![4_comparacion_metodos](https://github.com/martupiru/class-match/blob/main/code/resultados/graficos/4_comparacion_metodos.png)
 *Figura 2: Fitness final del algoritmo genético (mejor configuración), Greedy y Random. Las barras de error representan el desvío entre semillas*
 
-![5_metricas_secundarias](https://hackmd.io/_uploads/H1DJUzbrGe.png)
+![5_metricas_secundarias](https://github.com/martupiru/class-match/blob/main/code/resultados/graficos/5_metricas_secundarias.png)
 *Figura 3: Distancia total recorrida y cumplimiento de restricciones (conflictos horarios, disponibilidad, cobertura de Junior) para cada método*
 
 ##### 3.10.2 Experimento de escalabilidad
-![02_fitness_por_curso](https://hackmd.io/_uploads/HJeHXN-Bzg.png)
+![02_fitness_por_curso](https://github.com/martupiru/class-match/blob/main/code/resultados/graficos_escalabilidad/02_fitness_por_curso.png)
 *Figura 4: Fitness promedio por curso en función de la cantidad de cursos del dataset sintético (factores de escala 1 a 32), para el algoritmo genético (población=100, generaciones=60 fijos), Greedy y Random. Barras de error: desvío entre 10 semillas*
 
-![03_violaciones_por_curso](https://hackmd.io/_uploads/SJ1um4-Bzg.png)
+![03_violaciones_por_curso](https://github.com/martupiru/class-match/blob/main/code/resultados/graficos_escalabilidad/03_violaciones_por_curso.png)
 *Figura 5: Violaciones obligatorias promedio por curso (cursos sin Senior, Seniors fuera de disponibilidad y Seniors en conflicto horario) en función de la cantidad de cursos, para los tres métodos*
 
-![04_composicion_violaciones](https://hackmd.io/_uploads/r1G574bSfg.png)
+![04_composicion_violaciones](https://github.com/martupiru/class-match/blob/main/code/resultados/graficos_escalabilidad/04_composicion_violaciones.png)
 *Figura 6: Composición del total de violaciones por tipo, en la escala máxima evaluada (704 cursos), para cada método*
 
 ### 4.Análisis de resultados
